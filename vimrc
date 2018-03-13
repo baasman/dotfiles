@@ -4,9 +4,10 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'tpope/vim-fugitive'
+Plugin 'xolox/vim-misc'
 Plugin 'vim-airline/vim-airline'
+Plugin 'xolox/vim-notes'
 Plugin 'klen/python-mode'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-scripts/indentpython.vim'
@@ -14,6 +15,7 @@ Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'Valloric/YouCompleteMe'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
@@ -34,7 +36,9 @@ let g:airline#extensions#tabline#enabled = 1
 syntax on
 
 syntax enable
-colorscheme monokai
+set background=dark
+let g:solarized_termcolors=256
+colorscheme solarized
 
 autocmd VimEnter * NERDTree
 let NERDTreeShowHidden=1
@@ -81,3 +85,7 @@ let g:ycm_warning_symbol = '.'
 let g:ycm_error_symbol = '..'
 let g:ycm_server_use_vim_stdout = 1
 let g:ycm_server_python_interpreter = '/usr/local/Cellar/python@2/2.7.14_1/bin/python2' 
+
+iabbrev main if __name__ == '__main__':
+
+let g:notes_directories = ['/Users/baasman/notes']
