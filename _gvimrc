@@ -1,0 +1,91 @@
+
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=$HOME/.vim/bundle/Vundle.vim/
+call vundle#begin('$HOME/.vim/bundle/')
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'maralla/completor.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
+Plugin 'vim-airline/vim-airline'
+Plugin 'kien/ctrlp.vim'
+Plugin 'scrooloose/nerdcommenter'
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+syntax enable
+
+let mapleader = ','
+
+" completer
+"let g:completor_auto_trigger = 0
+inoremap <expr> <Tab> pumvisible() ? "<C-N>" : "<C-R>=completor#do('complete')<CR>"
+
+" airline stuff
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#syntastic#enabled = 1
+
+" status line
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+" syntastic
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_quiet_messages = { "type": "style" }
+
+syntax on
+syntax enable
+colorscheme deus
+
+" maps
+imap jk <Esc>
+
+" python stuff
+set foldmethod=indent
+set foldlevel=99
+
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix 
+
+set encoding=utf-8
+
+" line number
+set nu
+
+" CtrlP stuff
+"let g:ctrlp_map = '<c-p>'
+
+" netrw
+let g:netrw_banner = 0
+
+" make backspace act normal
+set backspace=indent,eol,start
+
+" maps
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+nnoremap <space> za
+nmap <S-Enter> o<Esc>
+
+set splitbelow
+set splitright
+
+" useful abbreviations
+iabbrev main if __name__ == '__main__':
+iabbrev debug import pdb; pdb.set_trace()
+
+set updatetime=100
+autocmd CursorHold * if (&filetype == 'netrw' && &number == 0) | set number | endif
