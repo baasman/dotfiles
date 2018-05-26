@@ -1,16 +1,15 @@
-
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=$HOME/.vim/bundle/Vundle.vim/
 call vundle#begin('$HOME/.vim/bundle/')
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'vim-syntastic/syntastic'
+Plugin 'w0rp/ale'
 Plugin 'maralla/completor.vim'
 Plugin 'tpope/vim-fugitive'
+Plugin 'chrisbra/csv.vim'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-surround'
-Plugin 'vim-airline/vim-airline'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/nerdcommenter'
 call vundle#end()            " required
@@ -24,20 +23,27 @@ let mapleader = ','
 "let g:completor_auto_trigger = 0
 inoremap <expr> <Tab> pumvisible() ? "<C-N>" : "<C-R>=completor#do('complete')<CR>"
 
-" airline stuff
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#syntastic#enabled = 1
-
 " status line
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+set laststatus=2
 
-" syntastic
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_quiet_messages = { "type": "style" }
+set statusline=
+"set statusline+=%#warningmsg#
+set statusline+=%#LineNr#
+"set statusline+=%{fugitive#statusline()}\  
+set statusline+=\ %f
+set statusline+=%m\
+set statusline+=%=
+set statusline+=%#CursorColumn#
+set statusline+=\ %y
+set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+set statusline+=\[%{&fileformat}\]
+set statusline+=\ %p%%
+set statusline+=\ %l:%c
+set statusline+=\ 
+
+"ale stuff
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
 
 syntax on
 syntax enable
@@ -54,7 +60,7 @@ au BufNewFile,BufRead *.py
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
-    \ set textwidth=79 |
+    \ set textwidth=99 |
     \ set expandtab |
     \ set autoindent |
     \ set fileformat=unix 
@@ -63,9 +69,6 @@ set encoding=utf-8
 
 " line number
 set nu
-
-" CtrlP stuff
-"let g:ctrlp_map = '<c-p>'
 
 " netrw
 let g:netrw_banner = 0
@@ -90,3 +93,5 @@ iabbrev debug import pdb; pdb.set_trace()
 
 set updatetime=100
 autocmd CursorHold * if (&filetype == 'netrw' && &number == 0) | set number | endif
+
+cd $HOME
