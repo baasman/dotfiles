@@ -1,51 +1,60 @@
-set nocompatible              " be iMproved, required
+
 filetype off                  " required
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" set the runtime path to include Vundle and initialize
+set rtp+=$HOME/.vim/bundle/Vundle.vim/
+call vundle#begin('$HOME/.vim/bundle/')
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'w0rp/ale'
+Plugin 'maralla/completor.vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'xolox/vim-misc'
-Plugin 'vim-airline/vim-airline'
-Plugin 'xolox/vim-notes'
-Plugin 'klen/python-mode'
-Plugin 'scrooloose/nerdtree'
-Plugin 'vim-scripts/indentpython.vim'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'nvie/vim-flake8'
+Plugin 'chrisbra/csv.vim'
+Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-surround'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'scrooloose/nerdtree'
+Plugin 'xolox/vim-session'
+Plugin 'xolox/vim-misc'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-" leader
+syntax enable
+
 let mapleader = ','
 
-" python mode stuff
-let g:pymode_run = 1
-let g:pymode_run_bind = '<leader>r' 
-let g:pymode_virtualenv = 1
-let g:pymode_lint = 0
-let python_highlight_all=1
+" completer
+inoremap <expr> <Tab> pumvisible() ? "<C-N>" : "<C-R>=completor#do('complete')<CR>"
 
-" airline stuff
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#syntastic#enabled = 1
+"nerdtree
+let NERDTreeShowLineNumbers=1
+let NERDTreeShowHidden=1
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-" syntax and colors
+
+" status line
+set laststatus=2
+set statusline=
+set statusline+=%#LineNr#
+set statusline+=\ %f
+set statusline+=%m\
+set statusline+=%=
+set statusline+=%#CursorColumn#
+set statusline+=\ %y
+set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+set statusline+=\[%{&fileformat}\]
+set statusline+=\ %p%%
+set statusline+=\ %l:%c
+set statusline+=\ 
+
+"ale stuff
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+
 syntax on
 syntax enable
-set background=dark
-let g:solarized_termcolors=256
-colorscheme solarized
-
-" nerdtree
-autocmd VimEnter * NERDTree
-let NERDTreeShowHidden=1
-let NERDTreeIgnore=['\.__pycache__$']
-map <C-n> :NERDTreeToggle<CR>
+colorscheme deus
 
 " maps
 imap jk <Esc>
@@ -58,7 +67,7 @@ au BufNewFile,BufRead *.py
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
-    \ set textwidth=79 |
+    \ set textwidth=99 |
     \ set expandtab |
     \ set autoindent |
     \ set fileformat=unix 
@@ -68,30 +77,12 @@ set encoding=utf-8
 " line number
 set nu
 
-" status line
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
 " CtrlP stuff
-let g:ctrlp_map = '<c-p>'
+"let g:ctrlp_map = '<c-p>'
 
-" vim-notes
-let g:notes_directories = ['~/notes']
-
-" syntastic
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_quiet_messages = { "type": "style" }
-
-" ycm stuff and debugging
-let g:ycm_server_keep_logfiles = 1
-let g:ycm_server_log_level = 'debug'
-let g:ycm_warning_symbol = '.'
-let g:ycm_error_symbol = '..'
-let g:ycm_server_use_vim_stdout = 1
-let g:ycm_server_python_interpreter = '/usr/local/Cellar/python@2/2.7.14_1/bin/python2' 
+" netrw
+let g:netrw_banner = 0
+let g:netrw_preview = 1
 
 " make backspace act normal
 set backspace=indent,eol,start
@@ -109,3 +100,9 @@ set splitright
 
 " useful abbreviations
 iabbrev main if __name__ == '__main__':
+iabbrev debug import ipdb; ipdb.set_trace()
+
+set updatetime=100
+autocmd CursorHold * if (&filetype == 'netrw' && &number == 0) | set number | endif
+
+cd $HOME
