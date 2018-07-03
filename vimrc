@@ -1,5 +1,6 @@
-
 filetype off                  " required
+set exrc
+set completeopt-=preview
 
 " set the runtime path to include Vundle and initialize
 set rtp+=$HOME/.vim/bundle/Vundle.vim/
@@ -16,6 +17,7 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'xolox/vim-session'
 Plugin 'xolox/vim-misc'
+Plugin 'mattn/emmet-vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
@@ -25,12 +27,14 @@ let mapleader = ','
 
 " completer
 inoremap <expr> <Tab> pumvisible() ? "<C-N>" : "<C-R>=completor#do('complete')<CR>"
+let g:completor_python_binary = '/usr/bin/python3'
 
 "nerdtree
 let NERDTreeShowLineNumbers=1
 let NERDTreeShowHidden=1
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+let NERDTreeIgnore=['\.pyc$', '__pycache__']
 
 
 " status line
@@ -59,6 +63,11 @@ colorscheme deus
 " maps
 imap jk <Esc>
 
+vnoremap <C-k> "ky
+"nnoremap <C-v> <C-w>j<C-w>"k
+vnoremap <leader>k "ky <C-w>j<C-w>"k<CR><C-w>k
+nnoremap <leader>b <C-w>j<C-c><Up><CR><C-w>k
+
 " python stuff
 set foldmethod=indent
 set foldlevel=99
@@ -78,7 +87,7 @@ set encoding=utf-8
 set nu
 
 " CtrlP stuff
-"let g:ctrlp_map = '<c-p>'
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|venv)$'
 
 " netrw
 let g:netrw_banner = 0
@@ -100,7 +109,7 @@ set splitright
 
 " useful abbreviations
 iabbrev main if __name__ == '__main__':
-iabbrev debug import ipdb; ipdb.set_trace()
+iabbrev dbug import ipdb; ipdb.set_trace()
 
 set updatetime=100
 autocmd CursorHold * if (&filetype == 'netrw' && &number == 0) | set number | endif
